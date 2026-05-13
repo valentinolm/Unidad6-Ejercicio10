@@ -1,6 +1,6 @@
 package com.prog4u6.ejercicio10;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductoRepository extends CrudRepository <ProductoModel, Long>{
+public interface ProductoRepository extends JpaRepository<ProductoModel, Long> {
 }

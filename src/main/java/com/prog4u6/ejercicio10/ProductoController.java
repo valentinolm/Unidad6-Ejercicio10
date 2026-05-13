@@ -1,5 +1,6 @@
 package com.prog4u6.ejercicio10;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,20 +8,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/productos")
 public class ProductoController {
 
-    public final ProductoRepository productoRepository;
+    private final ProductoService productoService;
 
-    public ProductoController(ProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
+    public ProductoController(ProductoService productoService) {
+        this.productoService = productoService;
     }
 
     @PostMapping
     public ResponseEntity<ProductoModel> guardarProducto(@RequestBody ProductoModel productoModel) {
-        ProductoModel producto = productoRepository.save(productoModel);
-        return ResponseEntity.ok().body(producto);
+        return ResponseEntity.status(201).body(productoService.guardar(productoModel));
     }
 
     @GetMapping
-    public Iterable<ProductoModel> obtenerProductos() {
-        return productoRepository.findAll();
+    public Page<ProductoModel> obtenerProductos(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size) {
+        return productoService.listar(page, size);
     }
 }
